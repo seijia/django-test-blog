@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+{% block content %}
+    <h2 class="post-title">一共找到{{ num }}篇文章</h2>
+<div class="posts">
+    {% for post in object_list %}
+        <section class="post">
+
+            <header class="post-header">
+                <h2 class="post-title"><a href="{% url "blog_get_detail" id=post.id %}">{{ post.title }}</a></h2>
+
+                    <p class="post-meta">
+                        Time:  <a class="post-author" href="#">{{ post.create |date:"Y M d"}}</a> <a class="post-category post-category-js" href="{% url 'search_tag' tag=post.category %}">{{ post.category|title }}</a>
+                    </p>
+            </header>
+
+                <div class="post-description">
+                    <p>
+                        {{ post.content|truncatewords_html:50|markdown}}
+                    </p>
+                </div>
+                <a class="pure-button" href="{% url "blog_get_detail" id=post.id %}">Read More >>> </a>
+        </section>
+        <hr/>
+    {% endfor %}
+</div><!-- /.blog-post -->
+{% endblock %}

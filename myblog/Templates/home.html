@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+{% load fittler %}
+
+{% block content %}
+<div class="posts">
+    {% for blog in blog_list %}
+        <section class="post">
+            <header class="post-header">
+                <h2 class="post-title" ><a href="{% url 'blog_get_detail' blog.id %}">{{ blog.title|lower2 }}</a></h2>
+
+                    <p class="post-meta">
+                        Time:  <a class="post-author" href="#">{{ blog.create }}</a> <a class="post-category post-category-js" href="{% url 'search_tag' tag=blog.category %}">{{ blog.category }}</a>
+                    </p>
+            </header>
+
+                <div class="post-description">
+                    <p>
+                        {{ blog.content|truncatewords_html:50|markdown }}
+                    </p>
+                </div>
+                <a class="pure-button" href="{% url "blog_get_detail" blog.id %}">Read More >>> </a>
+        </section>
+        <hr/>
+    {% endfor %}
+
+    {% if blog_list.object_list and blog_list.paginator.num_pages > 1 %}
+      <div>
+      <ul class="pager">
+      {% if blog_list.has_previous %}
+        <li><a href="?page={{ blog_list.previous_page_number }}">上一页</a></li>
+      {% endif %}
+
+      {% if blog_list.has_next %}
+        <li><a href="?page={{ blog_list.next_page_number }}">下一页</a></li>
+      {% endif %}
+      </ul>
+      </div>
+    {% endif %}
+</div><!-- /.blog-post -->
+{% endblock %}
